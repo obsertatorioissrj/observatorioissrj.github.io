@@ -6,24 +6,40 @@ Papa.parse('/dados_concurso_iss_rj.csv', {
   delimiter: ";",
   encoding: "UTF-8",
   complete: function(results) {
-    // Imprime os dados brutos no console do navegador (F12) para auditoria
-    console.log("Dados extraídos:", results.data);
-    // Filtra linhas vazias
     const dados = results.data.filter(row => row.NOME); 
     
-    // Processamento de métricas
-    const total = dados.length;
+    // Processamento das métricas
     const emExercicio = dados.filter(d => d.SITUACAO === 'EM EXERCÍCIO').length;
-    const evasoes = total - emExercicio;
+    const exonerados = dados.filter(d => d.SITUACAO === 'EXONERADO').length;
+    const desistencia = dados.filter(d => d.SITUACAO === 'DESISTENTE').length;
+    
+    const totalNomeados = emExercicio + exonerados;
+    const vagasImediatas = 50;
 
-    // Renderização das estatísticas
-    document.getElementById('estatisticas').innerHTML = `
-      <p><strong>Total de Convocados:</strong> ${total}</p>
-      <p><strong>Em Exercício:</strong> ${emExercicio}</p>
-      <p><strong>Evasões/Exonerações:</strong> ${evasoes}</p>
-    `;
+    // 1. Bloco Termômetro
+    const percentualTermometro = Math.min((totalNomeados / vagasImediatas) * 100, 100);
+    const barraFill = document.getElementById('termometro-fill');
+    barraFill.style.width = `${percentualTermometro}%`;
+    barraFill.innerText = `${totalNomeados} / ${vagasImediatas}`;
 
-    // Renderização dos dados na tabela
+    // Cálculo do tempo decorrido
+    const dataHomologacao = new Date('2023-11-29T00:00:00');
+    const dataAtual = new Date();
+    const diasDecorridos = Math.floor((dataAtual - dataHomologacao) / (1000 * 60 * 60 * 24));
+    document.getElementById('texto-dias').innerText = `após ${diasDecorridos} dias da homologação do concurso, contando a homologação do concurso do dia 29 de novembro de 2023.`;
+
+    // 2. Bloco Gráfico de Pizza
+    const percentualExonerados = totalNomeados > 0 ? (exonerados / totalNomeados) * 100 : 0;
+    const graficoPizza = document.getElementById('grafico-pizza');
+    // Desenha a fatia vermelha proporcional aos exonerados e o restante em cinza escuro
+    graficoPizza.style.background = `conic-gradient(var(--accent-red) 0% ${percentualExonerados}%, #333 ${percentualExonerados}% 100%)`;
+    document.getElementById('texto-exonerados').innerText = `${exonerados} dos ${totalNomeados} nomeados já deixaram o órgão.`;
+
+    // 3. Bloco Desistências
+    document.getElementById('numero-desistencia').innerText = desistencia;
+    document.getElementById('texto-desistencia').innerText = `${desistencia} foram nomeados e preferiram outros cargos.`;
+
+    // 4. Renderização da Tabela
     const tbody = document.getElementById('corpo-tabela');
     dados.forEach(row => {
       const tr = document.createElement('tr');

@@ -33,6 +33,14 @@
       text-align: center;
       margin-bottom: 20px;
     }
+      .title {
+
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 50px;
+      font-weight: bold;
+      color: var(--accent-yellow);
+    }
     .grid-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -42,6 +50,7 @@
     .title-block {
       color: var(--accent-yellow);
       margin-top: 0;
+      
     }
     .progress-bar-container {
       background-color: #333;
@@ -95,25 +104,84 @@
       color: var(--text-muted);
       margin-bottom: 0;
     }
+    #texto-dias {
+      font-size: 20px;
+      }
+    .btn-toggle {
+  background-color: var(--card-bg);
+  color: var(--accent-yellow);
+  border: 1px solid var(--border-color);
+  padding: 12px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 20px;
+  font-weight: bold;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-toggle:hover {
+  background-color: #262626;
+}
+
+/* Estado inicial oculto */
+.collapsible {
+  display: none; 
+}
+
+/* Classe ativada via JavaScript para exibição */
+.collapsible.visible {
+  display: block; 
+}
   </style>
 </head>
 <body>
+  <div class="title">
+    Observatório Concurso ISS RJ
+    
+    <p id="texto-dias"></p>
+    
+  </div>
   <div class="container">
     
     <div class="card">
-      <h2 class="title-block">Nomeações vs Vagas Imediatas (50)</h2>
+      <h2 class="title-block">Posse vs Vagas Imediatas</h2>
       <div class="progress-bar-container">
         <div id="termometro-fill" class="progress-bar-fill"></div>
       </div>
-      <p id="texto-dias"></p>
+      
     </div>
 
-    <div class="grid-row">
-      <div class="card">
-        <h2 class="title-block">Exonerações</h2>
-        <div id="grafico-pizza" class="pie-chart"></div>
-        <p id="texto-exonerados"></p>
+    <div class="card">
+      <h2 class="title-block">Auditores em Exercício vs Nomeações</h2>
+      <div class="progress-bar-container">
+        <div id="barra-exercicio-fill" class="progress-bar-fill"></div>
       </div>
+    </div>
+
+<div class="card">
+  <h2 class="title-block">Evasão</h2>
+  <div class="pie-container">
+    <div id="grafico-evasao" class="pie-chart">
+      <span id="label-exercicio" class="pie-label"></span>
+      <span id="label-exonerados" class="pie-label"></span>
+      <span id="label-desistencia" class="pie-label"></span>
+    </div>
+    <div class="pie-legend">
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: var(--accent-yellow);"></div> Em Exercício
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: var(--accent-red);"></div> Exonerados
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #555;"></div> Desistentes
+      </div>
+    </div>
+  </div>
+</div>
 
       <div class="card">
         <h2 class="title-block">Desistências</h2>
@@ -122,20 +190,22 @@
       </div>
     </div>
 
-    <div class="card" style="padding: 0; border: none;">
-      <table>
-        <thead>
-          <tr>
-            <th>Posição</th>
-            <th>Nome</th>
-            <th>Situação</th>
-            <th>Data Nomeação</th>
-            <th>Data Exoneração</th>
-          </tr>
-        </thead>
-        <tbody id="corpo-tabela"></tbody>
-      </table>
-    </div>
+<button id="btn-toggle-tabela" class="btn-toggle">Mostrar Detalhes dos Candidatos</button>
+
+<div id="container-tabela" class="card collapsible" style="padding: 0; border: none;">
+  <table>
+    <thead>
+      <tr>
+        <th>Posição</th>
+        <th>Nome</th>
+        <th>Situação</th>
+        <th>Data Nomeação</th>
+        <th>Data Exoneração</th>
+      </tr>
+    </thead>
+    <tbody id="corpo-tabela"></tbody>
+  </table>
+</div>
 
   </div>
   <script type="module" src="/src/main.js"></script>

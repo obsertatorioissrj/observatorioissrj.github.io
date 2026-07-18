@@ -8,7 +8,7 @@ Papa.parse('/dados_concurso_iss_rj.csv', {
   complete: function(results) {
     const dados = results.data.filter(row => row.NOME); 
     
-    // Processamento das métricas
+    // Processamento das métricas principais
     const emExercicio = dados.filter(d => d.SITUACAO === 'EM EXERCÍCIO').length;
     const exonerados = dados.filter(d => d.SITUACAO === 'EXONERADO').length;
     const desistencia = dados.filter(d => d.SITUACAO === 'DESISTENTE').length;
@@ -16,6 +16,7 @@ Papa.parse('/dados_concurso_iss_rj.csv', {
     const nomeados = emExercicio + exonerados + desistencia;
     const liquidoNomeados = emExercicio + exonerados;
     const vagasImediatas = 50;
+    const aposentadorias = 24; // Variável inserida manualmente
 
     // 1. Bloco Termômetro Principal
     const percentualTermometro = Math.min((liquidoNomeados / vagasImediatas) * 100, 100);
@@ -26,11 +27,32 @@ Papa.parse('/dados_concurso_iss_rj.csv', {
     }
 
     // 1.1 Bloco Auditores em Exercício vs Nomeações
-    const percentualExercicio = nomeados > 0 ? (emExercicio / nomeados) * 100 : 0;
+    const percentualExercicio = nomeados > 0 ? (emExercicio / 50) * 100 : 0;
     const barraExercicioFill = document.getElementById('barra-exercicio-fill');
     if (barraExercicioFill) {
       barraExercicioFill.style.width = `${percentualExercicio}%`;
-      barraExercicioFill.innerText = `${emExercicio} / ${nomeados}`;
+      barraExercicioFill.innerText = `${emExercicio} / 50`;
+    }
+
+    // 1.2 Bloco Renovação do Quadro (Gráfico Divergente)
+    const totalRenovacao = aposentadorias + emExercicio;
+    if (totalRenovacao > 0) {
+      const percAposentadorias = (aposentadorias / totalRenovacao) * 100;
+      const percNovos = (emExercicio / totalRenovacao) * 100;
+      const saldo = emExercicio - aposentadorias;
+      const sinalSaldo = saldo >= 0 ? '+' : '';
+
+      const labelAposentadorias = document.getElementById('label-aposentadorias');
+      const labelNovos = document.getElementById('label-novos');
+      const barraAposentadorias = document.getElementById('barra-aposentadorias');
+      const barraNovos = document.getElementById('barra-novos');
+      const textoSaldo = document.getElementById('texto-saldo');
+
+      if (labelAposentadorias) labelAposentadorias.innerText = `Aposentadorias (${aposentadorias})`;
+      if (labelNovos) labelNovos.innerText = `Em Exercício (${emExercicio})`;
+      if (barraAposentadorias) barraAposentadorias.style.width = `${percAposentadorias}%`;
+      if (barraNovos) barraNovos.style.width = `${percNovos}%`;
+      if (textoSaldo) textoSaldo.innerHTML = `Saldo: <strong>${sinalSaldo}${saldo}</strong> Auditores`;
     }
 
     // Cálculo do tempo decorrido
@@ -38,11 +60,10 @@ Papa.parse('/dados_concurso_iss_rj.csv', {
     const dataAtual = new Date();
     const diasDecorridos = Math.floor((dataAtual - dataHomologacao) / (1000 * 60 * 60 * 24));
     const textoDias = document.getElementById('texto-dias');
-    if (textoDias) textoDias.innerText = `Panorama após ${diasDecorridos} dias da homologação do concurso`;
+    if (textoDias) textoDias.innerText = `Panorama após ${diasDecorridos} dias da homologação do concurso realizado para 50 vagas`;
 
     // 2. Bloco Gráfico de Pizza (Evasão com Legenda e Números)
     if (nomeados > 0) {
-      // Cálculo das porcentagens de preenchimento
       const percExercicio = (emExercicio / nomeados) * 100;
       const percExonerados = (exonerados / nomeados) * 100;
       
@@ -53,11 +74,10 @@ Papa.parse('/dados_concurso_iss_rj.csv', {
       if (graficoEvasao) {
         graficoEvasao.style.background = `conic-gradient(var(--accent-yellow) 0% ${p1}%, var(--accent-red) ${p1}% ${p2}%, #555 ${p2}% 100%)`;
 
-        // Função trigonométrica para posicionar os números no centro das fatias
-        const raioPosicionamento = 45; // Distância do centro do círculo
-        const centroCirculo = 75; // Ponto central em pixels (metade de 150px)
+        const raioPosicionamento = 45; 
+        const centroCirculo = 75; 
         
-const posicionarRotulo = (id, valorAbsoluto, percInicial, percFinal) => {
+        const posicionarRotulo = (id, valorAbsoluto, percInicial, percFinal) => {
           const rotulo = document.getElementById(id);
           if (!rotulo) return;
           if (valorAbsoluto === 0) {
@@ -68,12 +88,10 @@ const posicionarRotulo = (id, valorAbsoluto, percInicial, percFinal) => {
           rotulo.innerText = valorAbsoluto;
           rotulo.style.display = 'block';
           
-          // Mapeia o ângulo (-90 graus alinha o grau 0 ao topo)
           const percMedio = percInicial + (percFinal - percInicial) / 2;
           const anguloGraus = (percMedio / 100) * 360 - 90; 
           const anguloRadianos = anguloGraus * (Math.PI / 180);
 
-          // Posição percentual (Centro = 50%, Raio da distância = 35%)
           const raioPorcentagem = 35; 
           const posicaoX = 50 + raioPorcentagem * Math.cos(anguloRadianos);
           const posicaoY = 50 + raioPorcentagem * Math.sin(anguloRadianos);
@@ -81,16 +99,34 @@ const posicionarRotulo = (id, valorAbsoluto, percInicial, percFinal) => {
           rotulo.style.left = `${posicaoX}%`;
           rotulo.style.top = `${posicaoY}%`;
         };
-
-
       }
     }
 
-    // 3. Bloco Desistências
+    // 3. Bloco Desistências e Evasão
     const numDesistencia = document.getElementById('numero-desistencia');
     const txtDesistencia = document.getElementById('texto-desistencia');
     if (numDesistencia) numDesistencia.innerText = desistencia;
     if (txtDesistencia) txtDesistencia.innerText = `${desistencia} foram nomeados e preferiram outros cargos.`;
+
+    const elementoPrefereOutro = document.getElementById('valor-prefere');
+    if (elementoPrefereOutro) {
+      elementoPrefereOutro.textContent = Math.round((exonerados + desistencia)/(emExercicio + exonerados + desistencia)*100);
+    }
+
+    const elementoExercicio = document.getElementById('valor-exercicio');
+    if (elementoExercicio) {
+      elementoExercicio.textContent = emExercicio;
+    }
+
+    const elementoExonerado = document.getElementById('valor-exonerado');
+    if (elementoExonerado) {
+      elementoExonerado.textContent = exonerados;
+    }
+
+    const elementoDesistente = document.getElementById('valor-desistente');
+    if (elementoDesistente) {
+      elementoDesistente.textContent = desistencia;
+    }
 
     // 4. Renderização da Tabela
     const tbody = document.getElementById('corpo-tabela');

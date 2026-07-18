@@ -33,8 +33,7 @@
       text-align: center;
       margin-bottom: 20px;
     }
-      .title {
-
+    .title {
       text-align: center;
       margin-bottom: 10px;
       font-size: 50px;
@@ -50,7 +49,6 @@
     .title-block {
       color: var(--accent-yellow);
       margin-top: 0;
-      
     }
     .progress-bar-container {
       background-color: #333;
@@ -106,106 +104,149 @@
     }
     #texto-dias {
       font-size: 20px;
-      }
+    }
     .btn-toggle {
-  background-color: var(--card-bg);
-  color: var(--accent-yellow);
-  border: 1px solid var(--border-color);
-  padding: 12px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 8px;
-  width: 100%;
-  text-align: left;
-  margin-bottom: 20px;
+      background-color: var(--card-bg);
+      color: var(--accent-yellow);
+      border: 1px solid var(--border-color);
+      padding: 12px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 8px;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 20px;
+      font-weight: bold;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .btn-toggle:hover {
+      background-color: #262626;
+    }
+    .collapsible {
+      display: none; 
+    }
+    .collapsible.visible {
+      display: block; 
+    }
+    /* Classes para o Gráfico Divergente */
+.comparative-container {
+  margin: 20px 0;
+}
+.comparative-labels {
+  display: flex;
+  justify-content: space-between;
   font-weight: bold;
-  transition: background-color 0.2s, color 0.2s;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  margin-top:30px;
 }
-
-.btn-toggle:hover {
-  background-color: #262626;
+.diverging-bar {
+  display: flex;
+  height: 60px;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  background-color: #333;
 }
-
-/* Estado inicial oculto */
-.collapsible {
-  display: none; 
+.diverging-red {
+  background-color: var(--accent-red);
+  height: 100%;
+  transition: width 0.5s ease-in-out;
 }
-
-/* Classe ativada via JavaScript para exibição */
-.collapsible.visible {
-  display: block; 
+.diverging-yellow {
+  background-color: var(--accent-yellow);
+  height: 100%;
+  transition: width 0.5s ease-in-out;
+}
+.balance-text {
+  margin-top: 30px;
+  font-size: 1.2rem;
+  color: var(--text-main);
 }
   </style>
 </head>
 <body>
   <div class="title">
     Observatório Concurso ISS RJ
-    
     <p id="texto-dias"></p>
-    
   </div>
+  
   <div class="container">
-    
     <div class="card">
-      <h2 class="title-block">Posse vs Vagas Imediatas</h2>
+      <h2 class="title-block">Auditores Empossados</h2>
       <div class="progress-bar-container">
         <div id="termometro-fill" class="progress-bar-fill"></div>
       </div>
-      
     </div>
 
     <div class="card">
-      <h2 class="title-block">Auditores em Exercício vs Nomeações</h2>
+      <h2 class="title-block">Auditores em Exercício</h2>
       <div class="progress-bar-container">
         <div id="barra-exercicio-fill" class="progress-bar-fill"></div>
       </div>
     </div>
 
+    <div class="grid-row">
+      <div class="card">
+        <h2 class="title-block"> <span id="valor-prefere"></span>% Preferiram Outros Órgãos </h2>
+        <div class="pie-container">
+          <div id="grafico-evasao" class="pie-chart">
+            <span id="label-exercicio" class="pie-label"></span>
+            <span id="label-exonerados" class="pie-label"></span>
+            <span id="label-desistencia" class="pie-label"></span>
+          </div>
+          <div class="pie-legend">
+            <div class="legend-item" style="color: var(--accent-yellow);">
+              <div class="legend-color" style="background-color: var(--accent-yellow);"></div> Em Exercício <span id="valor-exercicio"></span>
+            </div>
+            <div class="legend-item" style="color: var(--accent-red);">
+              <div class="legend-color" style="background-color: var(--accent-red);"></div> Exonerados <span id="valor-exonerado"></span>
+            </div>
+            <div class="legend-item" style="color: #555;">
+              <div class="legend-color" style="background-color: #555;"></div> Desistentes <span id="valor-desistente"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- Bloco: Renovação do Quadro (Aposentadorias vs Exercício) -->
 <div class="card">
-  <h2 class="title-block">Evasão</h2>
-  <div class="pie-container">
-    <div id="grafico-evasao" class="pie-chart">
-      <span id="label-exercicio" class="pie-label"></span>
-      <span id="label-exonerados" class="pie-label"></span>
-      <span id="label-desistencia" class="pie-label"></span>
+  <h2 class="title-block">Renovação do Quadro</h2>
+  <div class="comparative-container">
+    <div class="comparative-labels">
+      <span style="color: var(--accent-red);">Aposentadorias (24)</span>
+      <span style="color: var(--accent-yellow);">Em Exercício (27)</span>
     </div>
-    <div class="pie-legend">
-      <div class="legend-item">
-        <div class="legend-color" style="background-color: var(--accent-yellow);"></div> Em Exercício
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background-color: var(--accent-red);"></div> Exonerados
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background-color: #555;"></div> Desistentes
-      </div>
+    
+    <div class="diverging-bar">
+      <!-- O preenchimento percentual é calculado com base no total (24 + 27 = 51) -->
+      <!-- 24 representa aproximadamente 47% do total -->
+      <div id="barra-aposentadorias" class="diverging-red" style="width: 47%;"></div>
+      <!-- 27 representa aproximadamente 53% do total -->
+      <div id="barra-novos" class="diverging-yellow" style="width: 53%;"></div>
     </div>
+    
+    <p class="balance-text">Saldo: <strong>+3</strong> Auditores</p>
   </div>
 </div>
-
-      <div class="card">
-        <h2 class="title-block">Desistências</h2>
-        <div id="numero-desistencia" class="big-number">0</div>
-        <p id="texto-desistencia"></p>
-      </div>
     </div>
 
-<button id="btn-toggle-tabela" class="btn-toggle">Mostrar Detalhes dos Candidatos</button>
+    <button id="btn-toggle-tabela" class="btn-toggle">Mostrar Detalhes dos Candidatos</button>
 
-<div id="container-tabela" class="card collapsible" style="padding: 0; border: none;">
-  <table>
-    <thead>
-      <tr>
-        <th>Posição</th>
-        <th>Nome</th>
-        <th>Situação</th>
-        <th>Data Nomeação</th>
-        <th>Data Exoneração</th>
-      </tr>
-    </thead>
-    <tbody id="corpo-tabela"></tbody>
-  </table>
-</div>
+    <div id="container-tabela" class="card collapsible" style="padding: 0; border: none;">
+      <table>
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Nome</th>
+            <th>Situação</th>
+            <th>Data Nomeação</th>
+            <th>Data Exoneração</th>
+          </tr>
+        </thead>
+        <tbody id="corpo-tabela"></tbody>
+      </table>
+    </div>
 
   </div>
   <script type="module" src="/src/main.js"></script>

@@ -189,7 +189,7 @@
   }
 }
   </style>
-  <script type="module" crossorigin src="/assets/index-CQHYhOdw.js"></script>
+  <script type="module" crossorigin src="/assets/index-DwBKoAAn.js"></script>
 </head>
 <body>
   <div class="title">
@@ -199,14 +199,14 @@
   
   <div class="container">
     <div class="card">
-      <h2 class="title-block">Auditores Empossados</h2>
+      <h2 class="title-block"><span id="valor-empossados"></span>% dos Auditores Empossados</h2>
       <div class="progress-bar-container">
         <div id="termometro-fill" class="progress-bar-fill"></div>
       </div>
     </div>
 
     <div class="card">
-      <h2 class="title-block">Auditores em Exercício</h2>
+      <h2 class="title-block"><span id="valor-pexercicio"></span>% dos Auditores em Exercício</h2>
       <div class="progress-bar-container">
         <div id="barra-exercicio-fill" class="progress-bar-fill"></div>
       </div>
@@ -237,11 +237,11 @@
 
 <!-- Bloco: Renovação do Quadro (Aposentadorias vs Exercício) -->
 <div class="card">
-  <h2 class="title-block">Renovação do Quadro</h2>
+  <h2 class="title-block"><span id="valor-prenovacao"></span>% da Renovação do Quadro Esperada</h2>
   <div class="comparative-container">
     <div class="comparative-labels">
-      <span style="color: var(--accent-red);">Aposentadorias (24)</span>
-      <span style="color: var(--accent-yellow);">Em Exercício (27)</span>
+      <span style="color: var(--accent-red);">Aposentadorias (<span id="valor-aposentadoria"></span>)</span>
+      <span style="color: var(--accent-yellow);">Em Exercício (<span id="valor-exercicio2"></span>)</span>
     </div>
     
     <div class="diverging-bar">

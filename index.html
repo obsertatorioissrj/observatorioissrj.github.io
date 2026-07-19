@@ -178,18 +178,23 @@
   
   /* Encurtamento da tabela para visualização mobile */
   table {
-    font-size: 0.75rem;
+    font-size: 0.65rem; /* Fonte reduzida */
   }
   th, td {
     padding: 6px 4px;
     word-break: break-word;
+  }
+  /* Redução específica para a coluna Posição */
+  th:nth-child(1), td:nth-child(1) {
+    width: 12%; 
+    text-align: center;
   }
   #container-tabela {
     overflow-x: hidden;
   }
 }
   </style>
-  <script type="module" crossorigin src="/assets/index-DwBKoAAn.js"></script>
+  <script type="module" crossorigin src="/assets/index-bgvwoFSM.js"></script>
 </head>
 <body>
   <div class="title">
@@ -252,7 +257,7 @@
       <div id="barra-novos" class="diverging-yellow" style="width: 53%;"></div>
     </div>
     
-    <p class="balance-text">Saldo: <strong>+3</strong> Auditores</p>
+    <p class="balance-text">Saldo: <strong><span id="valor-saldo"></span></strong> Auditores</p>
   </div>
 </div>
     </div>

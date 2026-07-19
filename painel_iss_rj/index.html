@@ -88,6 +88,7 @@
       background-color: var(--card-bg);
       border-radius: 8px;
       overflow: hidden;
+      table-layout: fixed; /* Auxilia na contenção da largura máxima */
     }
     th, td {
       border: 1px solid var(--border-color);
@@ -97,6 +98,11 @@
     th {
       background-color: #262626;
       color: var(--accent-yellow);
+    }
+    th2 {
+      color: var(--text-muted);
+      align: center;
+      margin: 5;
     }
     p {
       color: var(--text-muted);
@@ -163,6 +169,30 @@
   font-size: 1.2rem;
   color: var(--text-main);
 }
+
+/* Media Query para telas de dispositivos móveis */
+@media (max-width: 768px) {
+  .grid-row {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Encurtamento da tabela para visualização mobile */
+  table {
+    font-size: 0.65rem; /* Fonte reduzida */
+  }
+  th, td {
+    padding: 6px 4px;
+    word-break: break-word;
+  }
+  /* Redução específica para a coluna Posição */
+  th:nth-child(1), td:nth-child(1) {
+    width: 12%; 
+    text-align: center;
+  }
+  #container-tabela {
+    overflow-x: hidden;
+  }
+}
   </style>
 </head>
 <body>
@@ -173,14 +203,14 @@
   
   <div class="container">
     <div class="card">
-      <h2 class="title-block">Auditores Empossados</h2>
+      <h2 class="title-block"><span id="valor-empossados"></span>% dos Auditores Empossados</h2>
       <div class="progress-bar-container">
         <div id="termometro-fill" class="progress-bar-fill"></div>
       </div>
     </div>
 
     <div class="card">
-      <h2 class="title-block">Auditores em Exercício</h2>
+      <h2 class="title-block"><span id="valor-pexercicio"></span>% dos Auditores em Exercício</h2>
       <div class="progress-bar-container">
         <div id="barra-exercicio-fill" class="progress-bar-fill"></div>
       </div>
@@ -211,11 +241,11 @@
 
 <!-- Bloco: Renovação do Quadro (Aposentadorias vs Exercício) -->
 <div class="card">
-  <h2 class="title-block">Renovação do Quadro</h2>
+  <h2 class="title-block"><span id="valor-prenovacao"></span>% da Renovação do Quadro Esperada</h2>
   <div class="comparative-container">
     <div class="comparative-labels">
-      <span style="color: var(--accent-red);">Aposentadorias (24)</span>
-      <span style="color: var(--accent-yellow);">Em Exercício (27)</span>
+      <span style="color: var(--accent-red);">Aposentadorias (<span id="valor-aposentadoria"></span>)</span>
+      <span style="color: var(--accent-yellow);">Em Exercício (<span id="valor-exercicio2"></span>)</span>
     </div>
     
     <div class="diverging-bar">
@@ -226,7 +256,7 @@
       <div id="barra-novos" class="diverging-yellow" style="width: 53%;"></div>
     </div>
     
-    <p class="balance-text">Saldo: <strong>+3</strong> Auditores</p>
+    <p class="balance-text">Saldo: <strong><span id="valor-saldo"></span></strong> Auditores</p>
   </div>
 </div>
     </div>
@@ -234,7 +264,8 @@
     <button id="btn-toggle-tabela" class="btn-toggle">Mostrar Detalhes dos Candidatos</button>
 
     <div id="container-tabela" class="card collapsible" style="padding: 0; border: none;">
-      <table>
+     <th2>Opa! Algum erro? Envia pra gente e vamos corrigir: observatorioissrj@gmail.com</th2>
+     <table>
         <thead>
           <tr>
             <th>Posição</th>

@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
 
-Papa.parse('/dados_concurso_iss_rj.csv', {
+Papa.parse('dados_concurso_iss_rj.csv', {
   download: true,
   header: true,
   delimiter: ",",

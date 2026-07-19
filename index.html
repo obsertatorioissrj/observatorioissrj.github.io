@@ -88,6 +88,7 @@
       background-color: var(--card-bg);
       border-radius: 8px;
       overflow: hidden;
+      table-layout: fixed; /* Auxilia na contenção da largura máxima */
     }
     th, td {
       border: 1px solid var(--border-color);
@@ -169,15 +170,22 @@
   color: var(--text-main);
 }
 
-/* Adição para rolagem horizontal da tabela em telas menores */
-#container-tabela {
-  overflow-x: auto;
-}
-
 /* Media Query para telas de dispositivos móveis */
 @media (max-width: 768px) {
   .grid-row {
     grid-template-columns: 1fr;
+  }
+  
+  /* Encurtamento da tabela para visualização mobile */
+  table {
+    font-size: 0.75rem;
+  }
+  th, td {
+    padding: 6px 4px;
+    word-break: break-word;
+  }
+  #container-tabela {
+    overflow-x: hidden;
   }
 }
   </style>

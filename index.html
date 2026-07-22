@@ -88,7 +88,7 @@
       background-color: var(--card-bg);
       border-radius: 8px;
       overflow: hidden;
-      table-layout: fixed; /* Auxilia na contenção da largura máxima */
+      table-layout: fixed;
     }
     th, td {
       border: 1px solid var(--border-color);
@@ -135,66 +135,64 @@
       display: block; 
     }
     /* Classes para o Gráfico Divergente */
-.comparative-container {
-  margin: 20px 0;
-}
-.comparative-labels {
-  display: flex;
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-bottom: 30px;
-  margin-top:30px;
-}
-.diverging-bar {
-  display: flex;
-  height: 60px;
-  border-radius: 10px;
-  overflow: hidden;
-  width: 100%;
-  background-color: #333;
-}
-.diverging-red {
-  background-color: var(--accent-red);
-  height: 100%;
-  transition: width 0.5s ease-in-out;
-}
-.diverging-yellow {
-  background-color: var(--accent-yellow);
-  height: 100%;
-  transition: width 0.5s ease-in-out;
-}
-.balance-text {
-  margin-top: 30px;
-  font-size: 1.2rem;
-  color: var(--text-main);
-}
+    .comparative-container {
+      margin: 20px 0;
+    }
+    .comparative-labels {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      margin-top:30px;
+    }
+    .diverging-bar {
+      display: flex;
+      height: 60px;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 100%;
+      background-color: #333;
+    }
+    .diverging-red {
+      background-color: var(--accent-red);
+      height: 100%;
+      transition: width 0.5s ease-in-out;
+    }
+    .diverging-yellow {
+      background-color: var(--accent-yellow);
+      height: 100%;
+      transition: width 0.5s ease-in-out;
+    }
+    .balance-text {
+      margin-top: 30px;
+      font-size: 1.2rem;
+      color: var(--text-main);
+    }
 
-/* Media Query para telas de dispositivos móveis */
-@media (max-width: 768px) {
-  .grid-row {
-    grid-template-columns: 1fr;
-  }
-  
-  /* Encurtamento da tabela para visualização mobile */
-  table {
-    font-size: 0.65rem; /* Fonte reduzida */
-  }
-  th, td {
-    padding: 6px 4px;
-    word-break: break-word;
-  }
-  /* Redução específica para a coluna Posição */
-  th:nth-child(1), td:nth-child(1) {
-    width: 12%; 
-    text-align: center;
-  }
-  #container-tabela {
-    overflow-x: hidden;
-  }
-}
+    /* Media Query para telas de dispositivos móveis */
+    @media (max-width: 768px) {
+      .grid-row {
+        grid-template-columns: 1fr;
+      }
+      
+      table {
+        font-size: 0.65rem;
+      }
+      th, td {
+        padding: 6px 4px;
+        word-break: break-word;
+      }
+      th:nth-child(1), td:nth-child(1) {
+        width: 12%; 
+        text-align: center;
+      }
+      #container-tabela {
+        overflow-x: hidden;
+      }
+    }
   </style>
-  <script type="module" crossorigin src="/assets/index-Cr6ZyqbE.js"></script>
+  <script type="module" crossorigin src="/assets/index-Co4vF0vd.js"></script>
 </head>
 <body>
   <div class="title">
@@ -241,26 +239,28 @@
         </div>
       </div>
 
-<!-- Bloco: Renovação do Quadro (Aposentadorias vs Exercício) -->
-<div class="card">
-  <h2 class="title-block"><span id="valor-prenovacao"></span>% da Renovação do Quadro Esperada</h2>
-  <div class="comparative-container">
-    <div class="comparative-labels">
-      <span style="color: var(--accent-red);">Aposentadorias (<span id="valor-aposentadoria"></span>)</span>
-      <span style="color: var(--accent-yellow);">Em Exercício (<span id="valor-exercicio2"></span>)</span>
+      <!-- Bloco: Renovação do Quadro (Aposentadorias vs Exercício) -->
+      <div class="card">
+        <h2 class="title-block"><span id="valor-prenovacao"></span>% da Renovação do Quadro Esperada</h2>
+        <div class="comparative-container">
+          <div class="comparative-labels">
+            <span style="color: var(--accent-red);">Aposentadorias (<span id="valor-aposentadoria"></span>)</span>
+            <span style="color: var(--accent-yellow);">Em Exercício (<span id="valor-exercicio2"></span>)</span>
+          </div>
+          
+          <div class="diverging-bar">
+            <div id="barra-aposentadorias" class="diverging-red" style="width: 47%;"></div>
+            <div id="barra-novos" class="diverging-yellow" style="width: 53%;"></div>
+          </div>
+          
+          <p class="balance-text">Saldo: <strong><span id="valor-saldo"></span></strong> Auditores</p>
+        </div>
+      </div>
     </div>
-    
-    <div class="diverging-bar">
-      <!-- O preenchimento percentual é calculado com base no total (24 + 27 = 51) -->
-      <!-- 24 representa aproximadamente 47% do total -->
-      <div id="barra-aposentadorias" class="diverging-red" style="width: 47%;"></div>
-      <!-- 27 representa aproximadamente 53% do total -->
-      <div id="barra-novos" class="diverging-yellow" style="width: 53%;"></div>
-    </div>
-    
-    <p class="balance-text">Saldo: <strong><span id="valor-saldo"></span></strong> Auditores</p>
-  </div>
-</div>
+
+    <!-- Novo Bloco: Controle de Dias sem Baixas -->
+    <div class="card">
+      <h2 class="title-block">Estamos há <span id="valor-dias"></span> dias sem perder um auditor fiscal. Nosso record é <span id="valor-maxdias"></span> dias.</h2>
     </div>
 
     <button id="btn-toggle-tabela" class="btn-toggle">Mostrar Detalhes dos Candidatos</button>
